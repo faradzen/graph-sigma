@@ -11,6 +11,7 @@ import { sigma } from 'sigma';
 export class SigmaGraphComponent implements OnInit {
 
   @Input() graph: any;
+  @Input() animate: boolean;
 
   title = 'app';
   private containerId = 'my-container-id';
@@ -35,6 +36,10 @@ export class SigmaGraphComponent implements OnInit {
     this.pluginDragNodesEnable();
     // Finally, let's ask our sigma instance to refresh:
     // this.sigmaInstance.refresh();
+
+    if (!!this.animate) {
+      this.initAnimation();
+    }
   }
 
   saveGraphState() {
@@ -154,7 +159,7 @@ export class SigmaGraphComponent implements OnInit {
         { id: 'n0', label: 'A node', x: 0, y: 0, size: 3 },
         { id: 'n1', label: 'Another node', x: 3, y: 1, size: 2 },
         { id: 'n2', label: 'And a last one', x: 1, y: 3, size: 1 },
-        { id: 'n3', label: 'child1', x: 0, y: 5, size: 2 , color: '#fb0101'},
+        { id: 'n3', label: 'child1', x: 0, y: 5, size: 2, color: '#fb0101' },
         { id: 'n4', label: 'child2', x: 1, y: 5, size: 2, customAttr: 'aloha custom attr', color: '#fb0101' }
       ],
       edges: [
