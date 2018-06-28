@@ -7,12 +7,14 @@ import { GraphAnimationViewComponent } from './views/animation/graph-animation.v
 import { GraphMultipleViewComponent } from './views/multiple/graph-multiple.view';
 import { GraphTriangleViewComponent } from './views/triangle/graph-triangle.view';
 import { RouterModule, Routes } from '@angular/router';
+import { FreestyleRendererViewComponent } from './views/freestyle-renderer/freestyle-renderer.view';
 
 
 const routes: Routes = [
   { path: 'triangle', component: GraphTriangleViewComponent },
   { path: 'multiple', component: GraphMultipleViewComponent },
-  { path: 'animation', component: GraphAnimationViewComponent }
+  { path: 'animation', component: GraphAnimationViewComponent },
+  { path: 'free', component: FreestyleRendererViewComponent }
 ];
 
 
@@ -20,7 +22,7 @@ const routes: Routes = [
   declarations: [
     AppComponent, SigmaGraphComponent,
 
-    GraphAnimationViewComponent,  GraphMultipleViewComponent, GraphTriangleViewComponent
+    GraphAnimationViewComponent, GraphMultipleViewComponent, GraphTriangleViewComponent, FreestyleRendererViewComponent
   ],
   imports: [
     BrowserModule, RouterModule.forRoot(routes)
