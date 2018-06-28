@@ -14,6 +14,8 @@ export class SigmaGraphComponent implements OnInit {
   private containerId = 'my-container-id';
   sigmaInstance: sigma;
 
+  savedState: any;
+
   constructor() {
 
   }
@@ -29,16 +31,50 @@ export class SigmaGraphComponent implements OnInit {
     // this.sigmaInstance.refresh();
   }
 
-  saveGraph() {
+  saveGraphState() {
     const instance = this.sigmaInstance;
-    const data = {
-      graph: {
-        nodes: instance.graph.nodes(),
-        edges: instance.graph.edges()
-      },
+    const savedGraph = JSON.stringify({
+      nodes: instance.graph.nodes(),
+      edges: instance.graph.edges()
+    });
+    this.savedState = {
+      graph: JSON.parse(savedGraph),
       filename: 'stateSaved_' + Date.now()
     };
-    console.log(data);
+    console.log(this.savedState);
+  }
+
+  loadGraphState() {
+    this.sigmaInstance.graph.clear();
+    this.sigmaInstance.refresh();
+    const self = this;
+    setTimeout(function () {
+      self.sigmaInstance.graph.read(self.savedState.graph);
+      self.sigmaInstance.refresh();
+    }, 300);
+
+    //     // Adding node
+    // sigInstance.graph.addNode(params);
+
+    // // Adding edge
+    // sigInstance.graph.addEdge(params);
+
+    // // You can also use the read method if you already have a object of nodes and edges
+    // sigInst.graph.read({nodes: [...], edges: [...]});
+
+    // // Updating nodes
+    // sigInstance.graph.nodes().forEach(function(n) {
+    //   n.size = 34;
+    //   n.color = '#000';
+    // });
+
+    // // Replace 'nodes' by 'edges' for the edges
+
+    // // Don't forget to refresh your instance when done so the new graph is correctly displayed
+    // sigInst.refresh();
+
+    // // If you want to clear the graph, use the clear method
+    // sigInst.graph.clear(); // graph now empty
   }
 
 
