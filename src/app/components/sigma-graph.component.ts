@@ -29,6 +29,18 @@ export class SigmaGraphComponent implements OnInit {
     // this.sigmaInstance.refresh();
   }
 
+  saveGraph() {
+    const instance = this.sigmaInstance;
+    const data = {
+      graph: {
+        nodes: instance.graph.nodes(),
+        edges: instance.graph.edges()
+      },
+      filename: 'stateSaved_' + Date.now()
+    };
+    console.log(data);
+  }
+
 
   private exampleDragNodes() {
     /**
@@ -68,13 +80,13 @@ export class SigmaGraphComponent implements OnInit {
     }
     // sigma.renderers.def = sigma.renderers.canvas
     // Instantiate sigma:
-    s = new sigma({
+    this.sigmaInstance = new sigma({
       graph: g,
       container: this.containerId
     });
 
     // Initialize the dragNodes plugin:
-    const dragListener = window['sigma'].plugins.dragNodes(s, s.renderers[0]);
+    const dragListener = window['sigma'].plugins.dragNodes(this.sigmaInstance, this.sigmaInstance.renderers[0]);
 
     dragListener.bind('startdrag', function (event) {
       console.log(event);
