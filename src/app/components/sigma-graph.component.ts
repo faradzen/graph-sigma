@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { sigma } from 'sigma';
 // import 'node_modules/sigma/build/plugins/sigma.plugins.animate.min';
 
@@ -9,6 +9,8 @@ import { sigma } from 'sigma';
   styleUrls: ['./sigma-graph.component.scss']
 })
 export class SigmaGraphComponent implements OnInit {
+
+  @Input() graph: any;
 
   title = 'app';
   private containerId = 'my-container-id';
@@ -24,9 +26,13 @@ export class SigmaGraphComponent implements OnInit {
     console.log('init SigmaGraphComponent');
 
 
-    this.exampleDragNodes();
+    // this.exampleDragNodes();
     // this.exampleAnimate();
     // this.exampleTriangle();
+
+    this.initSigmaGraph(this.graph, this.containerId);
+
+    this.pluginDragNodesEnable();
     // Finally, let's ask our sigma instance to refresh:
     // this.sigmaInstance.refresh();
   }
@@ -121,6 +127,10 @@ export class SigmaGraphComponent implements OnInit {
       container: this.containerId
     });
 
+    this.pluginDragNodesEnable();
+  }
+
+  private pluginDragNodesEnable() {
     // Initialize the dragNodes plugin:
     const dragListener = window['sigma'].plugins.dragNodes(this.sigmaInstance, this.sigmaInstance.renderers[0]);
 
@@ -141,51 +151,24 @@ export class SigmaGraphComponent implements OnInit {
   private exampleTriangle() {
     const graph = {
       nodes: [
-        {
-          id: 'n0',
-          label: 'A node',
-          x: 0,
-          y: 0,
-          size: 3
-        },
-        {
-          id: 'n1',
-          label: 'Another node',
-          x: 3,
-          y: 1,
-          size: 2
-        },
-        {
-          id: 'n2',
-          label: 'And a last one',
-          x: 1,
-          y: 3,
-          size: 1
-        }
+        { id: 'n0', label: 'A node', x: 0, y: 0, size: 3 },
+        { id: 'n1', label: 'Another node', x: 3, y: 1, size: 2 },
+        { id: 'n2', label: 'And a last one', x: 1, y: 3, size: 1 },
+        { id: 'n3', label: 'child1', x: 0, y: 5, size: 2 , color: '#fb0101'},
+        { id: 'n4', label: 'child2', x: 1, y: 5, size: 2, customAttr: 'aloha custom attr', color: '#fb0101' }
       ],
       edges: [
-        {
-          id: 'e0',
-          source: 'n0',
-          target: 'n1'
-        },
-        {
-          id: 'e1',
-          source: 'n1',
-          target: 'n2'
-        },
-        {
-          id: 'e2',
-          source: 'n2',
-          target: 'n0'
-        }
+        { id: 'e0', source: 'n0', target: 'n1' },
+        { id: 'e1', source: 'n1', target: 'n2', color: '#399c3b' },
+        { id: 'e2', source: 'n2', target: 'n0' },
+        { id: 'e3', source: 'n2', target: 'n3', color: '#5d78d4' },
+        { id: 'e4', source: 'n2', target: 'n4', color: '#5d78d4' }
       ]
     };
 
     this.initSigmaGraph(graph, this.containerId);
 
   }
-
 
   private exampleAnimate() {
 

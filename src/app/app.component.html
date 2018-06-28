@@ -1,6 +1,17 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <div style="text-align:center">
   <h2>graph sigma</h2>
-  <sigma-graph></sigma-graph>
+
+  <nav>
+    <a routerLink="/triangle">triangle drag</a>
+    <a routerLink="/multiple">many nodes drag</a>
+    <a routerLink="/animation">animation</a>
+  </nav>
+
+  <div class="view-container">
+    <router-outlet></router-outlet>
+  </div>
+
+  <!-- <sigma-graph></sigma-graph> -->
 
 </div>
