@@ -11,7 +11,7 @@ import { sigma } from 'sigma';
 export class SigmaGraphComponent implements OnInit {
 
   title = 'app';
-
+  private containerId = 'my-container-id';
   sigmaInstance: sigma;
 
   constructor() {
@@ -20,58 +20,136 @@ export class SigmaGraphComponent implements OnInit {
 
   ngOnInit(): void {
     console.log('init SigmaGraphComponent');
-    // const s1 = new sigma('my-container-id');
 
-    // const s3 = new sigma({
-    //   container: document.getElementById('my-container-id')
-    // });
-    // const s4 = new sigma({
-    //   renderers: [{
-    //     container: document.getElementById('my-container-id')
-    //   }]
-    // });
 
-    // const s = new sigma(document.getElementById('my-container-id'));
-    // s.graph.addNode({
-    //   // Main attributes:
-    //   id: 'n0',
-    //   label: 'Hello',
-    //   // Display attributes:
-    //   x: 0,
-    //   y: 0,
-    //   size: 1,
-    //   color: '#f00'
-    // }).addNode({
-    //   // Main attributes:
-    //   id: 'n1',
-    //   label: 'World !',
-    //   // Display attributes:
-    //   x: 1,
-    //   y: 1,
-    //   size: 1,
-    //   color: '#00f'
-    // }).addEdge({
-    //   id: 'e0',
-    //   // Reference extremities:
-    //   source: 'n0',
-    //   target: 'n1'
-    // });
+    this.exampleDragNodes();
+    // this.exampleAnimate();
+    // this.exampleTriangle();
+    // Finally, let's ask our sigma instance to refresh:
+    // this.sigmaInstance.refresh();
+  }
 
-    // s.settings({
-    //   edgeColor: 'default',
-    //   defaultEdgeColor: '#999'
-    // });
 
+  private exampleDragNodes() {
+    /**
+ * This example shows how to use the dragNodes plugin.
+ */
     let i;
-    let o;
-    let L = 10;
-    let N = 100;
-    let E = 500;
-    let g = {
+    let s;
+    const N = 10;
+    const E = 500;
+    const g = {
       nodes: [],
       edges: []
     };
-    let step = 0;
+
+    // Generate a random graph:
+    for (i = 0; i < N; i++) {
+      g.nodes.push({
+        id: 'n' + i,
+        label: 'Node ' + i,
+        x: Math.random(),
+        y: Math.random(),
+        size: Math.random(),
+        color: '#666'
+      });
+    }
+
+    for (i = 0; i < E; i++) {
+      g.edges.push({
+        id: 'e' + i,
+        // tslint:disable-next-line:no-bitwise
+        source: 'n' + (Math.random() * N | 0),
+        // tslint:disable-next-line:no-bitwise
+        target: 'n' + (Math.random() * N | 0),
+        size: Math.random(),
+        color: '#ccc'
+      });
+    }
+    // sigma.renderers.def = sigma.renderers.canvas
+    // Instantiate sigma:
+    s = new sigma({
+      graph: g,
+      container: this.containerId
+    });
+
+    // Initialize the dragNodes plugin:
+    const dragListener = window['sigma'].plugins.dragNodes(s, s.renderers[0]);
+
+    dragListener.bind('startdrag', function (event) {
+      console.log(event);
+    });
+    dragListener.bind('drag', function (event) {
+      console.log(event);
+    });
+    dragListener.bind('drop', function (event) {
+      console.log(event);
+    });
+    dragListener.bind('dragend', function (event) {
+      console.log(event);
+    });
+  }
+
+  private exampleTriangle() {
+    const graph = {
+      nodes: [
+        {
+          id: 'n0',
+          label: 'A node',
+          x: 0,
+          y: 0,
+          size: 3
+        },
+        {
+          id: 'n1',
+          label: 'Another node',
+          x: 3,
+          y: 1,
+          size: 2
+        },
+        {
+          id: 'n2',
+          label: 'And a last one',
+          x: 1,
+          y: 3,
+          size: 1
+        }
+      ],
+      edges: [
+        {
+          id: 'e0',
+          source: 'n0',
+          target: 'n1'
+        },
+        {
+          id: 'e1',
+          source: 'n1',
+          target: 'n2'
+        },
+        {
+          id: 'e2',
+          source: 'n2',
+          target: 'n0'
+        }
+      ]
+    };
+
+    this.initSigmaGraph(graph, this.containerId);
+
+  }
+
+
+  private exampleAnimate() {
+
+    let i;
+    let o;
+    const L = 10;
+    const N = 100;
+    const E = 500;
+    const g = {
+      nodes: [],
+      edges: []
+    };
 
     // Generate a random graph:
     for (i = 0; i < N; i++) {
@@ -108,13 +186,23 @@ export class SigmaGraphComponent implements OnInit {
     }
 
     // Instantiate sigma:
+    this.initSigmaGraph(g, this.containerId);
+    this.initAnimation();
+
+  }
+
+  private initSigmaGraph(graph: any, containerName: string) {
     this.sigmaInstance = new sigma({
-      graph: g,
-      container: 'my-container-id',
+      graph: graph,
+      container: containerName,
       settings: {
         animationsTime: 1000
       }
     });
+  }
+
+  private initAnimation() {
+    let step = 0;
     const self = this;
     setInterval(function () {
       const prefix = ['grid_', 'circular_'][step = +!step];
@@ -129,9 +217,6 @@ export class SigmaGraphComponent implements OnInit {
         }
       );
     }, 2000);
-
-    // Finally, let's ask our sigma instance to refresh:
-    self.sigmaInstance.refresh();
   }
 
 }

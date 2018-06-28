@@ -27,7 +27,8 @@
             ],
             "scripts": [
               "./node_modules/sigma/build/sigma.min.js",
-              "./node_modules/sigma/build/plugins/sigma.plugins.animate.min.js"
+              "./node_modules/sigma/build/plugins/sigma.plugins.animate.min.js",
+              "./node_modules/sigma/build/plugins/sigma.plugins.dragNodes.min.js"
             ]
           },
           "configurations": {
